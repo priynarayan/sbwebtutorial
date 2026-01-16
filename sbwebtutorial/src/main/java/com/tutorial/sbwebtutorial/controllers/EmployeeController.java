@@ -3,6 +3,7 @@ package com.tutorial.sbwebtutorial.controllers;
 import com.tutorial.sbwebtutorial.dto.EmployeeDTO;
 import com.tutorial.sbwebtutorial.entities.EmployeeEntity;
 import com.tutorial.sbwebtutorial.repositories.EmployeeRepository;
+import com.tutorial.sbwebtutorial.services.EmployeeServices;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -12,20 +13,20 @@ import java.util.List;
 @RequestMapping(path = "/employees")
 public class EmployeeController {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeServices employeeServices;
 
-    public EmployeeController(EmployeeRepository employeeRepository){
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeServices employeeServices){
+        this.employeeServices = employeeServices;
     }
 
     @GetMapping (path = "/{employeeId}")
-    public EmployeeEntity getEmployeeById(@PathVariable Long employeeId){
-        return employeeRepository.findById(employeeId).orElse(null);
+    public EmployeeDTO getEmployeeById(@PathVariable Long employeeId){
+        return employeeServices.getEmployeeById(employeeId);
     }
 
     @GetMapping
-    public List<EmployeeEntity> getEmployees(){
-        return employeeRepository.findAll();
+    public List<EmployeeDTO> getEmployees(){
+        return employeeServices.getEmployees();
     }
 
     @PutMapping
@@ -34,7 +35,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public EmployeeEntity saveEmployeeData(@RequestBody EmployeeEntity inputEmployee){
-        return employeeRepository.save(inputEmployee);
+    public EmployeeDTO saveEmployeeData(@RequestBody EmployeeDTO inputEmployee){
+        return employeeServices.saveEmployeeData(inputEmployee);
     }
 }
